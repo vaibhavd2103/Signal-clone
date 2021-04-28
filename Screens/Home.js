@@ -4,7 +4,8 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import CustomList from "../components/CustomList";
 import { auth, db } from "../firebase";
-import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 const Home = ({ navigation }) => {
   const [chats, setChats] = useState([]);
@@ -35,7 +36,7 @@ const Home = ({ navigation }) => {
       headerTitleStyle: { color: "white" },
       headerTintColor: "white",
       headerLeft: () => (
-        <View style={{ padding: 15 }}>
+        <View style={{ width: 95, paddingLeft: 10 }}>
           <TouchableOpacity activeOpacity={0.5} onPress={signOutUser}>
             <Avatar
               rounded
@@ -49,21 +50,21 @@ const Home = ({ navigation }) => {
       headerRight: () => (
         <View
           style={{
-            paddingRight: 15,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             width: 85,
+            paddingRight: 10,
           }}
         >
           <TouchableOpacity activeOpacity={0.5}>
-            <AntDesign name="camerao" size={28} color="white" />
+            <AntDesign name="camera" size={28} color="white" />
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => navigation.navigate("AddChat")}
           >
-            <SimpleLineIcons name="pencil" size={24} color="white" />
+            <Ionicons name="create" size={28} color="white" />
           </TouchableOpacity>
         </View>
       ),
@@ -79,6 +80,7 @@ const Home = ({ navigation }) => {
 
   return (
     <SafeAreaView>
+      <StatusBar style="light" />
       <ScrollView style={styles.container}>
         {chats.map(({ id, data: { chatName } }) => (
           <CustomList
