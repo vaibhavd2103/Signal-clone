@@ -33,7 +33,7 @@ const AddChat = ({ navigation }) => {
         value={input}
         onChangeText={(text) => setInput(text)}
       />
-      <Button onPress={createChat} title="Create Chat" />
+      <Button disabled={!input} onPress={createChat} title="Create Chat" />
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Keyboard,
   SafeAreaView,
@@ -9,7 +9,6 @@ import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import {
   AntDesign,
-  SimpleLineIcons,
   FontAwesome,
   Ionicons,
 } from "@expo/vector-icons";
@@ -20,6 +19,7 @@ import * as firebase from "firebase";
 
 const ChatScreen = ({ navigation, route }) => {
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,8 +34,7 @@ const ChatScreen = ({ navigation, route }) => {
             rounded
             size={40}
             source={{
-              uri:
-                "https://p7.hiclipart.com/preview/7/618/505/avatar-icon-fashion-men-vector-avatar.jpg",
+              uri: messages[0]?.data.photoURL,
             }}
           />
           <Text
@@ -80,7 +79,7 @@ const ChatScreen = ({ navigation, route }) => {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, messages]);
 
   const sendMessage = () => {
     Keyboard.dismiss();
@@ -96,6 +95,23 @@ const ChatScreen = ({ navigation, route }) => {
     setInput("");
   };
 
+  useLayoutEffect(() => {
+    const unsubscribe = db
+      .collection("chats")
+      .doc(route.params.id)
+      .collection("messages")
+      .orderBy("timestamp")
+      .onSnapshot((snapshot) =>
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
+    return unsubscribe;
+  }, [route]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -105,7 +121,48 @@ const ChatScreen = ({ navigation, route }) => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <ScrollView>{/* chats */}</ScrollView>
+            <ScrollView contentContainerStyle={{ padding: 10 }}>
+              {messages.map(({ id, data }) =>
+                data.email === auth.currentUser.email ? (
+                  <View key={id} style={styles.sender}>
+                    <Avatar
+                      position="absolute"
+                      bottom={-15}
+                      right={-5}
+                      rounded
+                      // WEB
+                      containerStyle={{
+                        position: "absolute",
+                        bottom: -15,
+                        right: -5,
+                      }}
+                      size={25}
+                      source={{ uri: data.photoURL }}
+                    />
+                    <Text>{data.message}</Text>
+                  </View>
+                ) : (
+                  <View key={id} style={styles.receiver}>
+                    <Avatar
+                      position="absolute"
+                      bottom={-15}
+                      right={-5}
+                      rounded
+                      // WEB
+                      containerStyle={{
+                        position: "absolute",
+                        bottom: -15,
+                        right: -5,
+                      }}
+                      size={25}
+                      source={{ uri: data.photoURL }}
+                    />
+                    <Text>{data.message}</Text>
+                    <Text>{data.displayName}</Text>
+                  </View>
+                )
+              )}
+            </ScrollView>
             <View style={styles.footer}>
               <TextInput
                 placeholder="Enter message"
@@ -151,5 +208,25 @@ const styles = StyleSheet.create({
     color: "black",
     borderRadius: 30,
     backgroundColor: "#edeef7",
+  },
+  sender: {
+    padding: 15,
+    alignSelf: "flex-end",
+    backgroundColor: "dodgerblue",
+    borderRadius: 20,
+    marginRight: 15,
+    maxWidth: "80%",
+    position: "relative",
+    marginBottom: 20,
+  },
+  receiver: {
+    padding: 15,
+    alignSelf: "flex-start",
+    backgroundColor: "grey",
+    borderRadius: 20,
+    marginRight: 15,
+    maxWidth: "80%",
+    position: "relative",
+    marginBottom: 20,
   },
 });
