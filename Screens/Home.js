@@ -17,24 +17,22 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-   
-      const unsubscribe = db.collection('chats').onSnapshot((snapshot) =>
-        setChats(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        )
-      );
+    const unsubscribe = db.collection("chats").onSnapshot((snapshot) =>
+      setChats(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      )
+    );
 
-      return unsubscribe;
-   
+    return unsubscribe;
   }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Signal",
-      headerStyle: { backgroundColor: "dodgerblue" },
+      headerStyle: { backgroundColor: "#008891" },
       headerTitleStyle: { color: "white" },
       headerTintColor: "white",
       headerLeft: () => (
@@ -81,9 +79,9 @@ const Home = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.chats}>
         {chats.map(({ id, data: { chatName } }) => (
           <CustomList
             key={id}
@@ -101,6 +99,10 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: "#30475e",
+  },
+  chats: {
     height: "100%",
   },
 });

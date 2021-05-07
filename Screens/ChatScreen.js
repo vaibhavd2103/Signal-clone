@@ -7,11 +7,7 @@ import {
 } from "react-native";
 import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
-import {
-  AntDesign,
-  FontAwesome,
-  Ionicons,
-} from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import { db, auth } from "../firebase";
@@ -24,7 +20,7 @@ const ChatScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Chat",
-      headerStyle: { backgroundColor: "dodgerblue" },
+      headerStyle: { backgroundColor: "#008891" },
       headerTintColor: "white",
       headerBackTitleVisible: false,
       headerTitleAlign: "left",
@@ -113,7 +109,7 @@ const ChatScreen = ({ navigation, route }) => {
   }, [route]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#30475e" }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
@@ -139,7 +135,7 @@ const ChatScreen = ({ navigation, route }) => {
                       size={25}
                       source={{ uri: data.photoURL }}
                     />
-                    <Text>{data.message}</Text>
+                    <Text style={styles.sendermsg}>{data.message}</Text>
                   </View>
                 ) : (
                   <View key={id} style={styles.receiver}>
@@ -157,8 +153,18 @@ const ChatScreen = ({ navigation, route }) => {
                       size={25}
                       source={{ uri: data.photoURL }}
                     />
-                    <Text>{data.message}</Text>
-                    <Text>{data.displayName}</Text>
+                    <Text style={styles.recievermsg}>{data.message}</Text>
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        color: "#008891",
+                        textAlign: "right",
+                        position: "relative",
+                        bottom: -9,
+                      }}
+                    >
+                      {data.displayName}
+                    </Text>
                   </View>
                 )
               )}
@@ -167,12 +173,12 @@ const ChatScreen = ({ navigation, route }) => {
               <TextInput
                 placeholder="Enter message"
                 value={input}
-                style={styles.inmsg}
+                style={styles.inputmsg}
                 onSubmitEditing={sendMessage}
                 onChangeText={(text) => setInput(text)}
               />
               <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
-                <Ionicons name="send" size={26} color="dodgerblue" />
+                <Ionicons name="send" size={26} color="#008891" />
               </TouchableOpacity>
             </View>
           </>
@@ -188,7 +194,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: "#30475e",
   },
   footer: {
     flexDirection: "row",
@@ -196,7 +202,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
   },
-  inmsg: {
+  inputmsg: {
     width: "90%",
     padding: 10,
     borderWidth: 1,
@@ -207,12 +213,12 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     color: "black",
     borderRadius: 30,
-    backgroundColor: "#edeef7",
+    backgroundColor: "white",
   },
   sender: {
     padding: 15,
     alignSelf: "flex-end",
-    backgroundColor: "dodgerblue",
+    backgroundColor: "#008891",
     borderRadius: 20,
     marginRight: 15,
     maxWidth: "80%",
@@ -222,11 +228,19 @@ const styles = StyleSheet.create({
   receiver: {
     padding: 15,
     alignSelf: "flex-start",
-    backgroundColor: "grey",
+    backgroundColor: "white",
     borderRadius: 20,
     marginRight: 15,
     maxWidth: "80%",
     position: "relative",
     marginBottom: 20,
+  },
+  sendermsg: {
+    color: "white",
+    fontSize: 15,
+  },
+  recievermsg: {
+    color: "black",
+    fontSize: 15,
   },
 });

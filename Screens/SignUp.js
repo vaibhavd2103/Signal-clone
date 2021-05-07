@@ -5,6 +5,10 @@ import {
   View,
   KeyboardAvoidingView,
   Image,
+  ImageBackground,
+  TextInput,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { auth } from "../firebase";
@@ -36,43 +40,55 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Image
+    <SafeAreaView style={styles.container}>
+      <ImageBackground
+        blurRadius={1.5}
+        mode="cover"
         source={{
           uri:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Signal-Logo.svg/1200px-Signal-Logo.svg.png",
+            "https://cdn.dribbble.com/users/3835653/screenshots/11936591/human_4x.png",
         }}
         style={styles.image}
-      />
-      <Input
-        placeholder="Username"
-        type="name"
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
-      <Input
-        placeholder="Email"
-        type="Email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-      <Input
-        placeholder="Password"
-        secureTextEntry
-        type="password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      <Input
-        placeholder="ImageUrl (optional)"
-        type="ImageUrl"
-        value={imageUrl}
-        onChangeText={(text) => setImageUrl(text)}
-        onSubmitEditing={register}
-      />
-      <Button title="SignUp" onPress={register} type="outline" />
-      <Button title="Login" onPress={() => navigation.navigate("Login")} />
-    </KeyboardAvoidingView>
+      >
+        <TextInput
+          placeholder="Username"
+          style={styles.inputuser}
+          type="name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
+        <TextInput
+          placeholder="Email"
+          style={styles.inputemail}
+          type="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          placeholder="Password"
+          style={styles.inputpass}
+          secureTextEntry
+          type="password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <TextInput
+          placeholder="ImageUrl (optional)"
+          style={styles.inputimage}
+          type="ImageUrl"
+          value={imageUrl}
+          onChangeText={(text) => setImageUrl(text)}
+          onSubmitEditing={register}
+        />
+        <View style={styles.signup}>
+          <TouchableOpacity onPress={register} type="outline">
+            <Text style={{ fontWeight: "bold", fontSize: 20, color: "black" }}>
+              SignUp
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 
@@ -86,9 +102,65 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 200,
-    height: 200,
-    borderRadius: 30,
-    marginBottom: 50,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inputemail: {
+    maxWidth: 400,
+    width: "70%",
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 15,
+    marginTop: 15,
+    borderBottomWidth: 4,
+    borderColor: "black",
+  },
+  inputuser: {
+    maxWidth: 400,
+    width: "70%",
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 15,
+    marginTop: 10,
+    marginTop: 50,
+    borderBottomWidth: 4,
+    borderColor: "black",
+  },
+  inputpass: {
+    maxWidth: 400,
+    width: "70%",
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 15,
+    marginTop: 15,
+    borderBottomWidth: 4,
+    borderColor: "black",
+  },
+  inputimage: {
+    maxWidth: 400,
+    width: "70%",
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 15,
+    marginTop: 15,
+    borderBottomWidth: 4,
+    borderColor: "black",
+  },
+  signup: {
+    marginTop: 170,
+    backgroundColor: "#55DBFF",
+    height: 50,
+    width: 150,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomWidth: 4,
+    borderColor: "black",
   },
 });

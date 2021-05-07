@@ -18,12 +18,25 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator /*initialRouteName={"Home"}*/>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={Signup} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={Signup}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Home"
           component={Home}
           options={{
+            headerShown: true,
             headerTitle: () => (
               <Text
                 style={{
@@ -33,7 +46,7 @@ export default function App() {
                   textAlign: "center",
                 }}
               >
-                Signal
+                CHAT APP
               </Text>
             ),
           }}
